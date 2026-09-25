@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+
+    <title>Movie Recommendations</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            color: #222;
+        }
+
+        /* Header */
+
+        .header {
+            background: linear-gradient(135deg, #111, #333);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        .header p {
+            color: #ddd;
+            margin-top: 10px;
+        }
+
+        /* Section */
+
+        .section-title {
+            max-width: 1200px;
+            margin: 35px auto 10px;
+            padding: 0 20px;
+        }
+
+        .section-title h2 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .section-title p {
+            color: #666;
+            margin-top: 8px;
+        }
+
+        /* Movie Grid */
+
+        .movies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
+            max-width: 1200px;
+            margin: 25px auto 40px;
+            padding: 0 20px;
+        }
+
+        /* Movie Link */
+
+        .movie-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Movie Card */
+
+        .movie-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+            transition: 0.3s ease;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.20);
+        }
+
+        /* Poster */
+
+        .movie-poster {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .poster-placeholder {
+            width: 100%;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ddd;
+            font-size: 60px;
+        }
+
+        /* Card Content */
+
+        .movie-info {
+            padding: 18px;
+        }
+
+        .movie-info h3 {
+            margin: 0 0 15px;
+            font-size: 23px;
+        }
+
+        .movie-info p {
+            margin: 9px 0;
+            color: #555;
+        }
+
+        .movie-info strong {
+            color: #222;
+        }
+
+        .rating {
+            font-weight: bold;
+        }
+
+        .price {
+            font-weight: bold;
+        }
+
+        /* Empty Message */
+
+        .no-recommendation {
+            text-align: center;
+            background: white;
+            padding: 35px;
+            margin: 35px auto;
+            max-width: 700px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.10);
+        }
+
+        /* Back Button */
+
+        .back-button {
+            display: block;
+            width: fit-content;
+            margin: 10px auto 40px;
+            padding: 12px 22px;
+            background: #111;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .back-button:hover {
+            background: #333;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 600px) {
+
+            .movies {
+                grid-template-columns: 1fr;
+                padding: 0 15px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .section-title {
+                padding: 0 15px;
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- Header -->
+
+    <div class="header">
+
+        <h1>⭐ Recommended for You</h1>
+
+        <p>
+            Movies based on your viewing history
+        </p>
+
+    </div>
+
+
+    <!-- Recently Viewed -->
+
+    {% if recently_viewed %}
+
+    <div class="section-title">
+
+        <h2>🕒 Recently Viewed Movies</h2>
+
+        <p>
+            Movies you viewed recently
+        </p>
+
+    </div>
+
+
+    <div class="movies">
+
+        {% for movie in recently_viewed %}
+
+        <a href="{% url 'movie_detail' movie.id %}" class="movie-link">
+
+            <div class="movie-card">
+
+
+                {% if movie.title == "Jawan" %}
+
+                <img src="{% static 'images/jawan.jpg' %}" alt="Jawan Poster" class="movie-poster">
+
+                {% elif movie.title == "Avengers" %}
+
+                <img src="{% static 'images/avengers.jpg' %}" alt="Avengers Poster" class="movie-poster">
+
+                {% else %}
+
+                <div class="poster-placeholder">
+                    🎬
+                </div>
+
+                {% endif %}
+
+
+                <div class="movie-info">
+
+                    <h3>
+                        🎬 {{ movie.title }}
+                    </h3>
+
+                    <p>
+                        <strong>Genre:</strong>
+                        {{ movie.genre }}
+                    </p>
+
+                    <p>
+                        <strong>Language:</strong>
+                        {{ movie.language }}
+                    </p>
+
+                    <p class="rating">
+                        <strong>Rating:</strong>
+                        ⭐ {{ movie.rating }}
+                    </p>
+
+                    <p class="price">
+                        <strong>Ticket Price:</strong>
+                        ₹{{ movie.ticket_price }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- Recommended Movies -->
+
+    <div class="section-title">
+
+        <h2>🎯 Recommended for You</h2>
+
+        <p>
+            Based on the genre of your recently viewed movie
+        </p>
+
+    </div>
+
+
+    {% if recommended_movies %}
+
+    <div class="movies">
+
+        {% for movie in recommended_movies %}
+
+        <a href="{% url 'movie_detail' movie.id %}" class="movie-link">
+
+            <div class="movie-card">
+
+
+                {% if movie.title == "Jawan" %}
+
+                <img src="{% static 'images/jawan.jpg' %}" alt="Jawan Poster" class="movie-poster">
+
+                {% elif movie.title == "Avengers" %}
+
+                <img src="{% static 'images/avengers.jpg' %}" alt="Avengers Poster" class="movie-poster">
+
+                {% else %}
+
+                <div class="poster-placeholder">
+                    🎬
+                </div>
+
+                {% endif %}
+
+
+                <div class="movie-info">
+
+                    <h3>
+                        🎬 {{ movie.title }}
+                    </h3>
+
+                    <p>
+                        <strong>Genre:</strong>
+                        {{ movie.genre }}
+                    </p>
+
+                    <p>
+                        <strong>Language:</strong>
+                        {{ movie.language }}
+                    </p>
+
+                    <p>
+                        <strong>City:</strong>
+                        {{ movie.city }}
+                    </p>
+
+                    <p>
+                        <strong>Theater:</strong>
+                        {{ movie.theater }}
+                    </p>
+
+                    <p>
+                        <strong>Release Date:</strong>
+                        {{ movie.release_date }}
+                    </p>
+
+                    <p class="rating">
+                        <strong>Rating:</strong>
+                        ⭐ {{ movie.rating }}
+                    </p>
+
+                    <p class="price">
+                        <strong>Ticket Price:</strong>
+                        ₹{{ movie.ticket_price }}
+                    </p>
+
+                    <p>
+                        <strong>Show Time:</strong>
+                        {{ movie.show_time }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% else %}
+
+    <div class="no-recommendation">
+
+        <h2>🎬 No Recommendations Available Yet</h2>
+
+        <p>
+            View some movies first and we will recommend
+            similar movies for you.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- Back Button -->
+
+    <a href="/" class="back-button">
+        ← Back to Movie Discovery
+    </a>
+
+
+</body>
+
+</html>

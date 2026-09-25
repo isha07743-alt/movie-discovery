@@ -1,0 +1,425 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ movie.title }} - Movie Details</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        /* HEADER */
+
+        header {
+            background: #111;
+            color: white;
+            padding: 22px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        header p {
+            color: #ccc;
+            margin-bottom: 0;
+        }
+
+        /* MAIN CONTAINER */
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        /* MOVIE CARD */
+
+        .movie-details {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        /* POSTER */
+
+        .poster {
+            width: 100%;
+            min-height: 500px;
+            background: #ddd;
+        }
+
+        .poster img {
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .poster-placeholder {
+            width: 100%;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 90px;
+            background: #ddd;
+        }
+
+        /* INFORMATION */
+
+        .movie-info {
+            padding: 35px;
+        }
+
+        .movie-info h2 {
+            font-size: 36px;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .movie-info .subtitle {
+            color: #777;
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        /* INFO BOXES */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .info-box {
+            background: #f7f7f7;
+            padding: 15px;
+            border-radius: 9px;
+            border: 1px solid #eee;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #555;
+            font-size: 13px;
+        }
+
+        .info-box span {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* RATING */
+
+        .rating {
+            margin-top: 25px;
+            padding: 15px;
+            background: #fff8d8;
+            border-radius: 9px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* PRICE */
+
+        .price {
+            margin-top: 15px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* BUTTONS */
+
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-button {
+            background: #111;
+            color: white;
+        }
+
+        .back-button:hover {
+            background: #333;
+        }
+
+        .recommend-button {
+            background: #e5e5e5;
+            color: #111;
+        }
+
+        .recommend-button:hover {
+            background: #ccc;
+        }
+
+        /* FOOTER */
+
+        footer {
+            margin-top: 50px;
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 18px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 750px) {
+
+            .movie-details {
+                grid-template-columns: 1fr;
+            }
+
+            .poster {
+                min-height: 400px;
+            }
+
+            .poster img {
+                min-height: 400px;
+            }
+
+            .movie-info h2 {
+                font-size: 28px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header>
+
+        <h1>🎬 Movie Discovery</h1>
+
+        <p>Movie Details</p>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <div class="container">
+
+
+        <div class="movie-details">
+
+
+            <!-- POSTER -->
+
+            <div class="poster">
+
+
+                {% if movie.title == "Jawan" %}
+
+                <img src="{% static 'images/jawan.jpg' %}" alt="Jawan Poster">
+
+
+                {% elif movie.title == "Avengers" %}
+
+                <img src="{% static 'images/avengers.jpg' %}" alt="Avengers Poster">
+
+
+                {% else %}
+
+                <div class="poster-placeholder">
+                    🎬
+                </div>
+
+                {% endif %}
+
+
+            </div>
+
+
+            <!-- MOVIE INFORMATION -->
+
+            <div class="movie-info">
+
+
+                <h2>
+                    {{ movie.title }}
+                </h2>
+
+
+                <p class="subtitle">
+                    🎥 Complete Movie Information
+                </p>
+
+
+                <div class="info-grid">
+
+
+                    <div class="info-box">
+
+                        <strong>🎭 Genre</strong>
+
+                        <span>
+                            {{ movie.genre }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <strong>🌐 Language</strong>
+
+                        <span>
+                            {{ movie.language }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <strong>📍 City</strong>
+
+                        <span>
+                            {{ movie.city }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <strong>🎦 Theater</strong>
+
+                        <span>
+                            {{ movie.theater }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <strong>📅 Release Date</strong>
+
+                        <span>
+                            {{ movie.release_date }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <strong>🕐 Show Time</strong>
+
+                        <span>
+                            {{ movie.show_time }}
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- RATING -->
+
+                <div class="rating">
+
+                    ⭐ Rating:
+                    {{ movie.rating }}/5
+
+                </div>
+
+
+                <!-- PRICE -->
+
+                <div class="price">
+
+                    💰 Ticket Price:
+                    ₹{{ movie.ticket_price }}
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="buttons">
+
+
+                    <a href="{% url 'home' %}" class="button back-button">
+                        ← Back to Movies
+                    </a>
+
+
+                    <a href="{% url 'recommendations' %}" class="button recommend-button">
+                        ⭐ Recommendations
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            🎬 Movie Discovery | Django Internship Project
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
